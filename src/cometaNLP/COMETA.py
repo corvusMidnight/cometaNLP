@@ -1,14 +1,17 @@
 ## Script ##
 import emoji
+import lib2to3.pgen2
 from lib2to3.pgen2 import token
 import pandas as pd
 import textstat
+import os
 from os import stat
-import numpy as np
+import operator
 from operator import index
 import re
 import regex
 import pandas as pd
+import collections
 from collections import Counter
 import string
 from textstat.textstat import *
@@ -17,14 +20,10 @@ from nltk.corpus import stopwords
 import nltk
 import spacy
 from spacy import displacy
-import nltk
 from nltk.tokenize import TreebankWordTokenizer as twt
 from nltk.tag import pos_tag
 import matplotlib.pyplot as plt
 
-#!python -m spacy download it_core_news_sm
-#!python -m spacy download en_core_web_sm
-#!python -m spacy download nl_core_news_sm
 
 class cometa:
     '''>>>A NLP tool to extract and analyze comments from .tsv and .csv files.\n
