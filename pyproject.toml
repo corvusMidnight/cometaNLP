@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "COMETA_corvusMidnight"
+version = "0.0.1"
+authors = [
+  { name="Leonardo Grotti", email="grottileonardo@hotmail.com" },
+]
+description = "A NLP data and text analysis tool for Italian, Dutch, and English social media comments."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/corvusMidnight/cometa"
+"Bug Tracker" = "https://github.com/corvusMidnight/cometa/issues"
