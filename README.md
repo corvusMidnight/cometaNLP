@@ -29,3 +29,8 @@ cometa is composed by one main module named `COMETA`. The module has two main cl
 
 # Authors
 - Leonardo Grotti <a href="https://www.linkedin.com/in/leonardo-grotti-a8a64a205/" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+
+# Q&A
+
+**Q**: *Why does cometa start from distribution 0.0.3?*
+**A**: The first two distributions of the package were erased due to some naming conflicts. 
