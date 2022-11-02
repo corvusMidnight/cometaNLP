@@ -7,3 +7,13 @@ Comments Extraction and Text Analysis:
 
 An NLP data and text analysis tool for Italian, Dutch, and English social media comments.
 
+# Installation
+
+## Windows
+`py -m pip install cometaNLP`
+
+## Unix\MacOS
+`python3 -m pip install cometaNLP`
+
+## ipynb file
+`!pip install cometaNLP`
