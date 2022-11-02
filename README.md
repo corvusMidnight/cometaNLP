@@ -21,7 +21,7 @@ A NLP Comments Extraction and Text Analysis tool for Italian, Dutch, and English
 # Supported languages
  ![](https://img.shields.io/badge/languages-italian|dutch|english-red)
 
-#Functions
+# Functions
 
 cometa is composed by one main module named `COMETA`. The module has two main class methods:
 
