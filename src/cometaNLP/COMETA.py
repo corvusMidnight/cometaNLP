@@ -26,8 +26,17 @@ import matplotlib.pyplot as plt
 
 
 class cometa:
-    '''>>>A NLP tool to extract and analyze comments from .tsv and .csv files.\n
-          It also proviedes a series of static methods for independent text analysis.
+    '''
+    A NLP tool to extract and analyze comments from .tsv and .csv files.
+    It supports Italian, Dutch, and English comments.
+    
+    cometaNLP proviedes two main methods:
+    - get_summary
+    - get_dictionary
+    
+    It also contains a series of static methods for independent text analysis.
+    It is also possible to analyze individual string of texts using the 
+    subclass TextAnalyzer.
 
     '''
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,9 +44,20 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @staticmethod
-    def load(file_type, file_path):
+    def load(file_type: str, file_path: str) -> object:
 
-        '''A method that reads .csv and .tsv files'''
+        """A method that reads .csv and .tsv files.
+        
+       
+        Args:
+            file_type (str): The type of file containing the data (csv/tsv)
+            file_path (str): The path to the file where the file is stored.
+          
+        Returns:
+            object: A pandas DataFrame object
+            
+        
+        """
 
         head = input('Does the dataframe have an header? Input "no"/"yes" to set Header = None/True"')
 
@@ -66,9 +86,16 @@ class cometa:
     @staticmethod
     def count_hashtags(text: str) -> int:
 
-        '''A function to be run on comments and returns the number of hashtags'''
+        '''
+        A function to be run on comments. It returns the number of hashtags
         
-        '''Necessary packages/modules:
+        Parameters
+        ----------
+        text: str
+            Any string
+        
+        Ret
+        Necessary packages/modules:
         - re
                             '''
         
