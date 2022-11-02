@@ -33,4 +33,5 @@ cometa is composed by one main module named `COMETA`. The module has two main cl
 # Q&A
 
 **Q**: *Why does cometa start from distribution 0.0.3?*
+
 **A**: The first two distributions of the package were erased due to some naming conflicts. 
