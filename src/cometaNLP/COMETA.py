@@ -54,7 +54,7 @@ class cometa:
             file_path (str): The path to the file where the file is stored.
           
         Returns:
-            object: A pandas DataFrame object
+            df (object): A pandas DataFrame object
             
         
         """
@@ -86,18 +86,15 @@ class cometa:
     @staticmethod
     def count_hashtags(text: str) -> int:
 
-        '''
-        A function to be run on comments. It returns the number of hashtags
+        """ A function to be run on comments. It returns the number of hashtags.
         
-        Parameters
-        ----------
-        text: str
-            Any string
+        Args:
+            text (str): Any string
         
-        Ret
-        Necessary packages/modules:
-        - re
-                            '''
+        Returns:
+            count (int): A count of the number of hashtags contained in the string
+
+        """
         
         count = 0
         hs = re.findall("#[A-Za-z0-9_]+", text)
@@ -109,11 +106,15 @@ class cometa:
     @staticmethod
     def count_url(text: str) -> int:
 
-        '''A function to be run on comments and returns the number of urls'''
-        
-        '''Necessary packages/modules:
-        - re
-                            '''
+        """A function to be run on comments. It returns the number of urls.
+
+        Args:
+            text (str): Any string
+
+        Returns:
+            count (int): A count of the number of urls
+
+        """
 
         count = 0
         urls = re.findall("http\S+", text) + re.findall("www.\S+", text) + re.findall("URL", text) + re.findall("url", text)
@@ -126,11 +127,15 @@ class cometa:
     @staticmethod
     def count_user_tags(text: str) -> int:
         
-        '''A function to be run on comments and returns the number of user mentions'''
+        """A function to be run on comments. It returns the number of user tags.
 
-        '''Necessary packages/modules:
-        - re
-                            '''
+        Args:
+            text (str): Any string
+
+        Returns:
+            count (int): A count of the number of user tags
+
+        """
 
         count = 0
         tags = re.findall("@[A-Za-z0-9_]+", text)
@@ -143,17 +148,19 @@ class cometa:
     @staticmethod
     def preprocessor(text: str) -> str:
 
-        '''A function to be run on the tweets through apply to clean them.
-        The function should be run on the original tweet column to obtain
-        a new "clean_tweet" column and to prepare the original "tweet" column
-        to calculate the AFINN/VADER scores'''
-    
-        '''Necessary packages/modules:
-        - re
-                            '''
-        #df = self.load()
-        #text_column = input(f'What is the name of the column containing the comments? Enter one of the values you see below {df.sample(n=2)}')                    
+        """A function to be run on the comments through apply to clean them.
+        
+        The function applies a series of transformation to the comments. Hashtags,
+        urls, and user tags are removed.Digits and leading/trailing spaces are also removed.
 
+        Args:
+            text (str): Any string
+        
+        Returns:
+            txt (str): The input text without hashtags, urls, etc.
+        
+        
+        """
 
 
         #Noise removal based on the explain weights function of the baseline logistic regression
@@ -181,7 +188,16 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @staticmethod
     def punctuation_removal(text:str) -> str:
+        
+        """A function to be run on comments. It returns comments without punctuation.
+        
+        Args:
+            text (str): Any string
 
+        Returns:
+            txt (str): The input text without punctuation
+
+        """
         # remove punctuations and convert characters to lower case
         txt = "".join([char for char in text if char not in '!"#$%&\()*+,-./:;<=>?@[\\]^_`{|}~']) 
     
@@ -191,28 +207,35 @@ class cometa:
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def count_emoji(text):
+    def count_emoji(text: str) -> int:
 
-        '''A function to be applied to the cleaned comments. It returns the emoji
-        count for each comment'''
+        
+        """A function to be run on comments. It returns the number of emojis.
 
-        '''Necessary packages/modules:
-        - emoji
-                            '''
+        Args:
+            text (str): Any string
+
+        Returns:
+            count (int): A count of the number of emojis
+
+        """
         
         emoji_counter = emoji.emoji_count(text)
         return emoji_counter
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def demojizer(txt):
+    def demojizer(text: str) -> str:
 
-        '''A function to be applied to the cleaned comments. It returns a demojized
-        version of the same comments'''
+        """A function to be run on comments. It returns the number of urls.
 
-        '''Necessary packages/modules:
-        - emoji
-                            '''
-        txt = emoji.demojize(txt)
+        Args:
+            text (str): Any string
+
+        Returns:
+            txt (str): The input text without emojis
+
+        """
+        txt = emoji.demojize(text)
         
         return txt
 
@@ -220,8 +243,16 @@ class cometa:
     @staticmethod
     def comment_length(l: list) -> int:
         
-        '''A function to be applied to the tokenized comments. It returns the length in tokens.
-        '''
+        
+        """A function to be run on comments. It returns the length of the comments.
+
+        Args:
+            text (str): Any string
+
+        Returns:
+            count (int): The comment length
+
+        """
 
         count = len(l)
         
@@ -231,9 +262,16 @@ class cometa:
     @staticmethod
     def word_counts(l: list) -> dict:
 
-        '''A function to accumulate counts in a dictionary for each 
-        word that appears.
-        '''
+        
+        """A function to be run on comments. It returns a dictionary containing the word counts.
+
+        Args:
+            l (list): Any list of strings
+
+        Returns:
+            counts (dict): A word-counts dictionary
+
+        """
         counts = Counter()
         
         for token in l:
@@ -244,10 +282,20 @@ class cometa:
     @staticmethod
     def type_token_ratio(text: str) -> float:
 
-        '''A function to calculate the type-token ratio on the words in a string. The type-token
+        """"A function to calculate type-token ratio.
+        
+        A function to calculate the type-token ratio on the words in a string. The type-token
         ratio is defined as the number of unique word types divided by the number
-        of total words.
-        '''
+        of total words. ATTENTION: requires the COMETA.word_counts() to run.
+
+        Args:
+            text (str): Any string
+        
+        Returns:
+            
+            float: A float expressing the comments TTR
+
+        """
         
         counts = cometa.word_counts(text)
 
@@ -258,6 +306,20 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @staticmethod
     def visualize_pos(tokens: list) -> object:
+
+        """A function used to visualize POS-tagged comments.
+
+        visualize_pos() is a void function. If 'visualize = True',
+        a displacy visualization will appear on top of the TextAnalyzer
+        get_data() output.
+
+        Args:
+            tokens (list): Any list of strings
+        
+        Returns:
+            NonValue-Returning
+        
+        """
         pos_tags = ["PRON", "VERB", "NOUN", "ADJ", "ADP",
                     "ADV", "CONJ", "DET", "NUM", "PRT"]
         
@@ -324,15 +386,21 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def tokenizer(self, text: str) -> list:
 
-        '''A method to be run on the comments through apply to tokenize them.
-        The function is meant to be run on the "clean_tweet" column after the other
+        """A class method to tokenize text. It returns the tokenized comments.
+        
+        A class method to be run on the comments through apply to tokenize them.
+        The function is applied on the "clean_comments" column after the other
         preproccesing steps listed above to obtained a new "tokenized_comments"
-        column'''
-    
-        '''Necessary packages/modules:
-        - nltk
-        - word_tokenize
-                        '''
+        column.
+
+        Args:
+            self: reference to the current instance of the class
+            text (str): Any string
+
+        Returns:
+            txt (list): A list of strings. The tokenized input text.
+        
+        """
         txt = word_tokenize(text, language=self.language)
         txt = [token for token in txt if token]
         
@@ -342,14 +410,20 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def italian_tokenizer(self, text: str) -> list:
 
-        '''A method to be run on the comments through apply to tokenize them.
+        """A class method to tokenize Italian text. It returns the tokenized text.
+        
+        A class method to be run on the comments through apply to tokenize them.
         The function is ideantical to the tokenizer above. However, it is meant to be
-        used for Italian data: nltk tokenizer does not split on the "'" correctly for Italian. '''
+        used for Italian data: nltk tokenizer does not split on the "'" correctly for Italian.
     
-        '''Necessary packages/modules:
-        - nltk
-        - word_tokenize
-                        '''
+        Args:
+            self: reference to the current instance of the class
+            text (str): Any string
+
+        Returns:
+            txt (list): A list of strings. The tokenized input text.
+        
+        """
         txt = word_tokenize(text, language=self.language)
         txt = [token for token in txt if token]
         txt = [token for word in txt for token in word.split("'")]
@@ -359,12 +433,16 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def stop_words_removal(self, tokens: list) -> list:
 
-        '''A method to be run on tokenized comments. It returns the comments striped
-        off the stopwords'''
+        """A class method to be run on tokenized comments. It returns the comments striped off the stopwords.
+
+        Args:
+            self: reference to the current instance of the class
+            tokens (list): Any list of strings
+
+        Returns:
+            tokens (list): The input tokenized text stripped off the stop words
         
-        '''Necessary packages/modules:
-        - nltk
-                            '''
+        """
         
         #Stopwords removal
         stop = set(stopwords.words(self.language))
@@ -374,9 +452,19 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def content_function_ratio(self, tokens: list) -> float:
 
-        '''A function to calculate the content-function words ratio on the words in a list of tokens.
-        of total words.
-        '''
+        """A class method to be run on tokenized comments. It returns the content-function words ratio.
+
+        If the number of function words is equal to 0, the returned digit expresses the number of content words in the text
+
+        Args:
+            self: reference to the current instance of the class
+            tokens (list): Any list of strings
+
+        Returns:
+            float: The content-function words ratio
+        
+        """
+
         
         stop = set(stopwords.words(self.language))
         
@@ -401,11 +489,17 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def lemmatizer(self, tokens: list) -> list:
 
-        '''A method to be run on tokenized comments. It returns the lemmatized comments'''
+        """A class method to be run on tokenized text. It returns the lemmatized comments'''
+         
+        Args:
+            self: reference to the current instance of the class
+            tokens (list): Any list of strings
+
+        Returns:
+            lemmas (list): The lemmas of the input tokenized text
         
-        '''Necessary packages/modules:
-        - Spacy
-                            '''
+        """
+
         lemmas = []
         text = ' '.join(tokens)
 
@@ -419,15 +513,19 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def pos(self, tokens: list) -> list:
 
-        '''>>>A method to be run on tokenized and lemmatized comments. It returns
-        the POS tagging
+        """A class method to be run on tokenized and/or lemmatized comments. It returns
+        the POS tagging.
+
+        Args:
+            self: reference to the current instance of the class
+            tokens (list): Any list of strings
+
+        Returns:
+            pos (list): The pos tags of the input tokenized text
         
-        >>>Necessary packages/modules:
-        - NLTK
-                          '''
+        """
         pos = [item[1] for item in  pos_tag(tokens, tagset='universal') ]
        
-
 
         return pos
 
@@ -435,11 +533,28 @@ class cometa:
     
     def get_dictionary(self, file_type: str, file_path: str, data_frame = False):
 
-        '''A method that reads .csv and .tsv file, applies the functions and methods described above
+        """A class method that applies a series of tranformations to csv and tsv files
+        and returns a dictionary
+        
+        get_dictionary reads .csv and .tsv file, applies the functions and methods described above
         in meaningful order adding columns to the dataframe,
         and finally converts it into a dictionary by index according to the following format:
         {index -> {column -> value}}. The dictionary contains relevant information
-        for each comment in the dataset'''
+        for each comment in the dataset.
+
+        Args:
+            self: reference to the current instance of the class
+            file_type (str): A string (csv/tsv)
+            file_path (str): A string containing a file path to a csv/tsv file
+            data_frame (bool): If set to true, the function returns additionally pandas DataFrame object
+                               rather than a dictionary
+        
+        Returns:
+            output (dict): A nested dictionary {index -> {column -> value}} containing
+                           relevant data and metadata for each comment
+
+
+        """
 
         other_features_names = ["FKRA", "FRE","num_syllables", "avg_syl_per_word", "num_chars", "num_chars_total", \
                                 "num_terms", "num_words", "num_unique_words"]
@@ -489,14 +604,24 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def get_summary(self, file_type, file_path, visualize = True) -> tuple:
 
-        '''>>>A class method that returns the relevant data grouping and
-        comparing X v. Y
-        rather than for each comment individually.
-
-        >>>If visualize is set to True, it also shows a simple visualization of all the
-        summarized data'''
-
+        """A class method that returns the relevant data grouping and
+        comparing X v. Y rather than for each comment individually.
         
+        get_summary() is built upon the get_dictionary method. If visualize is set to True, it also shows a simple visualization of all the
+        summarized data. It compares average number of emojis, hashtags,
+        urls, user tags, length, type-token ratio, content-function ratio for
+        two classes of comments.
+
+        Args:
+            self: reference to the current instance of the class
+            file_type (str): A string (csv/tsv)
+            file_path (str): A string containing a file path to a csv/tsv file
+        
+        Returns:
+            tuple: a tuple of values.
+
+
+        """
         output, df = self.get_dictionary(file_type, file_path, data_frame=True)
         l_column = int(input(f'''Enter the index of the categorical by which you want the data to be grouped by.
                                  Remember: Index starts from 0 in Python'''))
@@ -547,18 +672,38 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TextAnalyser(cometa):
-
+    """A subclass of 
+    
+    """
     def __init__(self, language: str, **args):
         super().__init__(language)
         
         
         
-    def get_data(self, input_string: str, remove_punctuation = True, remove_emojis = True, remove_stopwords = True, TTR = True, CFR = True, lemmatize = True, pos = True, visualize = True) -> tuple:
+    def get_data(self, input_string: str, remove_punctuation = True, remove_emojis = True, remove_stopwords = True, TTR = True, CFR = True, lemmatize = True, pos = True, visualize = True) -> dict:
         
-        '''A function that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
+        """A class method that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
         boolean arguments and returns a dictionary contatining the relevant information. If visualization is set to true, it 
         
-        '''
+        get_data() is built upon the get_dictionary method. It applies the the same set of transformation on the string level. The user can choose which transformations
+        to apply and which to not. If visualize is set to True, it also shows a simple visualization of the pos-tags.
+
+        Args:
+            self: reference to the current instance of the class
+            input_string: Any string
+            remove_punctuation (bool): Optionally choose whether to keep (False) or remove (True) punctuation from the input text
+            remove_emojis (bool): Optionally choose whether to keep (False) or remove (True) emojis from the input text
+            remove_stopwords (bool): Optionally choose whether to keep (False) or remove (True) stopwords from the input text
+            TTR (bool): Optionally choose whether to calculate (True) or not (False) the input text TTR
+            CFR (bool): Optionally choose whether to calculate (True) or not (False) the input text CFR
+            lemmatize (bool): Optionally choose whether to lemmatize (True) or not (False) the input text
+            pos (bool): Optionally choose whether to pos-tag (True) or not (False) the input text
+            visualize (bool): If set to true, visualizes the pos-tags using nltk color schemes.
+
+        Returns:
+            dictionary: a dictionary containing the relevant data and metadata for the input text
+
+        """
         self.input_string = input_string
         c_string = cometa.preprocessor(self.input_string)
 
