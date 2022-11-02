@@ -3,6 +3,8 @@
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/cometaNLP)
 [![Python 3.7](https://img.shields.io/badge/python->=3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+
 
 Comments Extraction and Text Analysis:
 
@@ -20,8 +22,7 @@ An NLP data and text analysis tool for Italian, Dutch, and English social media 
 `!pip install cometaNLP`
 
 # Supported languages
-[![saythanks](https://img.shields.io/badge/languages-italian-dutch-english-ff69b4.svg)](https://saythanks.io/to/kennethreitz)
-
+ ![](https://img.shields.io/badge/languages-italian|dutch|english-red)
 
 #Functions
 
