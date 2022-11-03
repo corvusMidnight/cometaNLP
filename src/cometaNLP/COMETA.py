@@ -535,12 +535,16 @@ class cometa:
 
         """A class method that applies a series of tranformations to csv and tsv files
         and returns a dictionary
-        
-        get_dictionary reads .csv and .tsv file, applies the functions and methods described above
-        in meaningful order adding columns to the dataframe,
-        and finally converts it into a dictionary by index according to the following format:
+
+        get_dictionary() reads .csv and .tsv file, applies the functions and methods within the
+        the COMETA module to the column contaning the comments/text in the dataframe
+        in meaningful order, and finally converts it into a dictionary by index according to the following format:
         {index -> {column -> value}}. The dictionary contains relevant information
         for each comment in the dataset.
+        To make the function as comprehensive as possible, the user is asked to enter
+        whether the csv/tsv file has a header or not and the index of the column
+        on which they wish to apply the transformations. The column should be the one containing the comments\text
+        data that the user whishes to analyze.
 
         Args:
             self: reference to the current instance of the class
@@ -548,12 +552,10 @@ class cometa:
             file_path (str): A string containing a file path to a csv/tsv file
             data_frame (bool): If set to true, the function returns additionally pandas DataFrame object
                                rather than a dictionary
-        
+
         Returns:
             output (dict): A nested dictionary {index -> {column -> value}} containing
-                           relevant data and metadata for each comment
-
-
+                           relevant data and metadata for each comment in the input dataframe
         """
 
         other_features_names = ["FKRA", "FRE","num_syllables", "avg_syl_per_word", "num_chars", "num_chars_total", \
@@ -604,23 +606,20 @@ class cometa:
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def get_summary(self, file_type, file_path, visualize = True) -> tuple:
 
-        """A class method that returns the relevant data grouping and
-        comparing X v. Y rather than for each comment individually.
-        
+        """A class method that returns the relevant data comparison based on grouping 
+        comparison (e.g., X v. Y) rather than for each comment individually.
+
         get_summary() is built upon the get_dictionary method. If visualize is set to True, it also shows a simple visualization of all the
         summarized data. It compares average number of emojis, hashtags,
         urls, user tags, length, type-token ratio, content-function ratio for
         two classes of comments.
-
         Args:
             self: reference to the current instance of the class
             file_type (str): A string (csv/tsv)
             file_path (str): A string containing a file path to a csv/tsv file
-        
+
         Returns:
             tuple: a tuple of values.
-
-
         """
         output, df = self.get_dictionary(file_type, file_path, data_frame=True)
         l_column = int(input(f'''Enter the index of the categorical by which you want the data to be grouped by.
@@ -672,7 +671,7 @@ class cometa:
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class TextAnalyser(cometa):
-    """A subclass of 
+    """A subclass of the cometa class. It is meant to analyze single instances of text"
     
     """
     def __init__(self, language: str, **args):
