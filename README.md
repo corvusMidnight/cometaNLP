@@ -96,7 +96,20 @@ And a subclass functionality to analyze single instances of text:
             dictionary: a dictionary containing the relevant data and metadata for the input text
         """
 
+# Static methods
 
+The COMETA module offers a set of `@staticmethods` that can be used independently from its main class methods:
+- `count_hashtags`
+- `count_url`
+- `count_user_tags`
+- `preprocessor`
+- `punctuation_removal`
+- `count_emoji`
+- `demojizer`
+- `comment_length`
+- `word_counts`
+- `type_token_ration`
+- `visualize_pos`
 
 
 # Authors
