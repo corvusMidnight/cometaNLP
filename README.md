@@ -1,4 +1,5 @@
 # cometaNLP
+![PyPI](https://img.shields.io/pypi/v/cometaNLP?label=pypi%20package)
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/cometaNLP)
 [![Python 3.7](https://img.shields.io/badge/python->=3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
