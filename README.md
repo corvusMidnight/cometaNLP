@@ -99,9 +99,10 @@ And a subclass functionality to analyze single instances of text:
 # Static methods
 
 The COMETA module offers a set of `@staticmethods` that can be used independently from its main class methods:
+
 - `load`
 
-    ""A method that reads .csv and .tsv files.
+        """A method that reads .csv and .tsv files.
         
        
         Args:
@@ -116,7 +117,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `count_hashtags`
 
-    """ A function to be run on comments. It returns the number of hashtags.
+        """A function to be run on comments. It returns the number of hashtags.
         
         Args:
             text (str): Any string
@@ -126,7 +127,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
         """
 - `count_url`
 
-    """A function to be run on comments. It returns the number of urls.
+        """A function to be run on comments. It returns the number of urls.
         Args:
             text (str): Any string
         Returns:
@@ -135,7 +136,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `count_user_tags`
 
-    """A function to be run on comments. It returns the number of user tags.
+        """A function to be run on comments. It returns the number of user tags.
         Args:
             text (str): Any string
         Returns:
@@ -144,10 +145,11 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `preprocessor`
 
-    """A function to be run on the comments through apply to clean them.
+        """A function to be run on the comments through apply to clean them.
         
         The function applies a series of transformation to the comments. Hashtags,
         urls, and user tags are removed.Digits and leading/trailing spaces are also removed.
+        
         Args:
             text (str): Any string
         
@@ -159,7 +161,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `punctuation_removal`
 
-     """A function to be run on comments. It returns comments without punctuation.
+        """A function to be run on comments. It returns comments without punctuation.
         
         Args:
             text (str): Any string
@@ -169,7 +171,8 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `count_emoji`
 
-    """A function to be run on comments. It returns the number of emojis.
+        """A function to be run on comments. It returns the number of emojis.
+        
         Args:
             text (str): Any string
         Returns:
@@ -178,7 +181,8 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `demojizer`
 
-    """A function to be run on comments. It returns the number of urls.
+        """A function to be run on comments. It returns the number of urls.
+        
         Args:
             text (str): Any string
         Returns:
@@ -187,7 +191,8 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `comment_length`
 
-    """A function to be run on comments. It returns the length of the comments.
+        """A function to be run on comments. It returns the length of the comments.
+        
         Args:
             text (str): Any string
         Returns:
@@ -196,7 +201,8 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `word_counts`
 
-    """A function to be run on comments. It returns a dictionary containing the word counts.
+        """A function to be run on comments. It returns a dictionary containing the word counts.
+        
         Args:
             l (list): Any list of strings
         Returns:
@@ -205,11 +211,12 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `type_token_ration`
 
-    """"A function to calculate type-token ratio.
+        """"A function to calculate type-token ratio.
         
         A function to calculate the type-token ratio on the words in a string. The type-token
         ratio is defined as the number of unique word types divided by the number
         of total words. ATTENTION: requires the COMETA.word_counts() to run.
+        
         Args:
             text (str): Any string
         
@@ -220,10 +227,11 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 
 - `visualize_pos`
 
-    """A function used to visualize POS-tagged comments.
+        """A function used to visualize POS-tagged comments.
         visualize_pos() is a void function. If 'visualize = True',
         a displacy visualization will appear on top of the TextAnalyzer
         get_data() output.
+        
         Args:
             tokens (list): Any list of strings
         
