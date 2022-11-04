@@ -372,7 +372,7 @@ class cometa:
 
         # Assig to self object
 
-        if self.language == 'italian':
+        if self.language == 'italian' or self.language == 'ita' or self.language == 'it':
             try:
                 self.nlp = spacy.load('it_core_news_sm')
             except:
@@ -383,7 +383,7 @@ class cometa:
                     print('Downloaded!')
                     self.nlp = spacy.load('it_core_news_sm')
 
-        if self.language == 'dutch':
+        if self.language == 'dutch' or self.language == 'nld' or self.language == 'nl':
             try:
                 self.nlp = spacy.load('nl_core_news_sm')
             except:
@@ -394,7 +394,7 @@ class cometa:
                     print('Downloaded!')
                     self.nlp = spacy.load('nl_core_news_sm')
 
-        if self.language == 'english':
+        if self.language == 'english' or self.language == 'eng' or self.language == 'en':
             try:
                 self.nlp = spacy.load('en_core_web_sm')
             except:
@@ -404,7 +404,7 @@ class cometa:
                     os.system('python -m spacy download en_core_web_sm')
                     print('Downloaded!')
                     self.nlp = spacy.load('en_core_web_sm')
-                    
+
         if self.language not in ['italian', 'english', 'dutch']:
             raise AttributeError("Invalid language input: select one from ['italian', 'english', 'dutch']. Input language is always lowercased by default.")
         

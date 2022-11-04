@@ -14,3 +14,8 @@
 
 - Fixed documentation for the source code and README.md
 - Added information to package README.md 
+
+## v0.0.6
+
+- Fixed an error which caused users who did not have spacy language models installed to run into an error
+- Corrected typos in README.md
