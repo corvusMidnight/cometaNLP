@@ -371,13 +371,40 @@ class cometa:
         self.language = language.lower()
 
         # Assig to self object
+
         if self.language == 'italian':
-            self.nlp = spacy.load('it_core_news_sm')
+            try:
+                self.nlp = spacy.load('it_core_news_sm')
+            except:
+                x = input('Model "it_core_news_sm" is not installed yet, do you want to install it? Y | N')
+                if x == 'Y':
+                    print('Downloading model...')
+                    os.system('python -m spacy download it_core_news_sm')
+                    print('Downloaded!')
+                    self.nlp = spacy.load('it_core_news_sm')
+
         if self.language == 'dutch':
-            self.nlp = spacy.load('nl_core_news_sm')
+            try:
+                self.nlp = spacy.load('nl_core_news_sm')
+            except:
+                x = input('Model "nl_core_news_sm" is not installed yet, do you want to install it? Y | N')
+                if x == 'Y':
+                    print('Downloading model...')
+                    os.system('python -m spacy download nl_core_news_sm')
+                    print('Downloaded!')
+                    self.nlp = spacy.load('nl_core_news_sm')
+
         if self.language == 'english':
-            self.nlp = spacy.load('en_core_web_sm')
-        
+            try:
+                self.nlp = spacy.load('en_core_web_sm')
+            except:
+                x = input('Model "en_core_web_sm" is not installed yet, do you want to install it? Y | N')
+                if x == 'Y':
+                    print('Downloading model...')
+                    os.system('python -m spacy download en_core_web_sm')
+                    print('Downloaded!')
+                    self.nlp = spacy.load('en_core_web_sm')
+                    
         if self.language not in ['italian', 'english', 'dutch']:
             raise AttributeError("Invalid language input: select one from ['italian', 'english', 'dutch']. Input language is always lowercased by default.")
         

@@ -53,7 +53,7 @@ cometa is composed by one main module named `COMETA`. The module has two main cl
                            relevant data and metadata for each comment in the input dataframe
         """
 
-**(2)** `gert_summary`
+**(2)** `get_summary`
  
         """A class method that returns the relevant data comparison based on grouping 
         comparison (e.g., X v. Y) rather than for each comment individually.
@@ -210,7 +210,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
             counts (dict): A word-counts dictionary
         """
 
-- `type_token_ration`
+- `type_token_ratio`
 
         """"A function to calculate type-token ratio.
         
@@ -250,3 +250,7 @@ The COMETA module offers a set of `@staticmethods` that can be used independentl
 **Q**: *Why does cometa start from distribution 0.0.3?*
 
 **A**: The first two distributions of the package were erased due to some naming conflicts. 
+
+**Q**: *Why has version 0.0.3a0 been yanked?*
+
+**A**: The version was meant to fix additional bugs but failed in doing so. As such, it was yanked.
