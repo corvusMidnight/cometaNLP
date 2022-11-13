@@ -19,3 +19,7 @@
 
 - Fixed an error which caused users who did not have spacy language models installed to run into an error
 - Corrected typos in README.md
+
+## v0.0.7
+
+- Fixed an error which causes users who did not have nltk's "punkt" module downaloaded to run into a lookupError

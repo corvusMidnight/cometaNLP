@@ -367,6 +367,7 @@ class cometa:
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     def __init__(self, language = 'italian'):
+    
 
         self.language = language.lower()
 
@@ -428,9 +429,25 @@ class cometa:
             txt (list): A list of strings. The tokenized input text.
         
         """
-        txt = word_tokenize(text, language=self.language)
-        txt = [token for token in txt if token]
         
+        try:
+            txt = word_tokenize(text, language=self.language)
+            txt = [token for token in txt if token]
+        
+        except LookupError:
+            
+            x = input('Model "punkt" is not installed yet, do you want to install it? Y | N')
+            if x.lower() == 'y':
+                    print('Downloading model...')
+                    nltk.download('punkt')
+                    print('Downloaded!')
+                    txt = word_tokenize(text, language=self.language)
+                    txt = [token for token in txt if token]
+            
+            else:
+                    txt = ModuleNotFoundError
+                    print('Please download "punkt" to used cometaNLP tokenizer')
+
 
         return txt
         
@@ -451,9 +468,27 @@ class cometa:
             txt (list): A list of strings. The tokenized input text.
         
         """
-        txt = word_tokenize(text, language=self.language)
-        txt = [token for token in txt if token]
-        txt = [token for word in txt for token in word.split("'")]
+        try:
+
+            txt = word_tokenize(text, language=self.language)
+            txt = [token for token in txt if token]
+            txt = [token for word in txt for token in word.split("'")]
+
+        except LookupError:
+            
+            x = input('Model "punkt" is not installed yet, do you want to install it? Y | N')
+            if x.lower() == 'y':
+
+                    print('Downloading model...')
+                    nltk.download('punkt')
+                    print('Downloaded!')
+                    txt = word_tokenize(text, language=self.language)
+                    txt = [token for token in txt if token]
+                    txt = [token for word in txt for token in word.split("'")]
+            
+            else:
+                    txt = ModuleNotFoundError
+                    print('Please download "punkt" to used cometaNLP tokenizer')
 
         return txt
 
