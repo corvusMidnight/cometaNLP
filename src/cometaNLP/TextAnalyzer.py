@@ -24,19 +24,36 @@ from nltk.tokenize import TreebankWordTokenizer as twt
 from nltk.tag import pos_tag
 import matplotlib.pyplot as plt
 
-
-class cometa:
+class TextAnalyzer:
     '''
-    A NLP tool to extract and analyze comments from .tsv and .csv files.
+    A NLP tool to analyze comments in string format.
     It supports Italian, Dutch, and English comments.
     
-    cometaNLP proviedes two main methods:
-    - get_summary
-    - get_dictionary
-    
     It also contains a series of static methods for independent text analysis.
-    It is also possible to analyze individual string of texts using the 
-    subclass TextAnalyzer.
+    It is also possible to extract and analyze entire dataframes of string using the 
+    subclass DataWrapper.
+    The class has one main behavior:
+    It operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
+        boolean arguments and returns a dictionary contatining the relevant information. If visualization is set to true, it 
+        
+        It applies a set of transformation on the string level.
+        The user can choose which transformations
+        to apply and which to not. If visualize is set to True, it also shows a simple visualization of the pos-tags.
+        
+        Args:
+            self: reference to the current instance of the class
+            input_string: Any string
+            remove_punctuation (bool): Optionally choose whether to keep (False) or remove (True) punctuation from the input text
+            remove_emojis (bool): Optionally choose whether to keep (False) or remove (True) emojis from the input text
+            remove_stopwords (bool): Optionally choose whether to keep (False) or remove (True) stopwords from the input text
+            TTR (bool): Optionally choose whether to calculate (True) or not (False) the input text TTR
+            CFR (bool): Optionally choose whether to calculate (True) or not (False) the input text CFR
+            lemmatize (bool): Optionally choose whether to lemmatize (True) or not (False) the input text
+            pos (bool): Optionally choose whether to pos-tag (True) or not (False) the input text
+            visualize (bool): If set to true, visualizes the pos-tags using nltk color schemes.
+        Returns:
+            dictionary: a dictionary containing the relevant data and metadata for the input text
+        """
 
     '''
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -286,7 +303,7 @@ class cometa:
         
         A function to calculate the type-token ratio on the words in a string. The type-token
         ratio is defined as the number of unique word types divided by the number
-        of total words. ATTENTION: requires the COMETA.word_counts() to run.
+        of total words. ATTENTION: requires the TextAnlyzer.word_counts() to run.
 
         Args:
             text (str): Any string
@@ -297,7 +314,7 @@ class cometa:
 
         """
         
-        counts = cometa.word_counts(text)
+        counts = TextAnalyzer.word_counts(text)
 
         type_count = len(counts.keys())
         token_count = sum(counts.values())
@@ -592,163 +609,17 @@ class cometa:
         return pos
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
-    def get_dictionary(self, file_type: str, file_path: str, data_frame = False):
 
-        """A class method that applies a series of tranformations to csv and tsv files
-        and returns a dictionary
-
-        get_dictionary() reads .csv and .tsv file, applies the functions and methods within the
-        the COMETA module to the column contaning the comments/text in the dataframe
-        in meaningful order, and finally converts it into a dictionary by index according to the following format:
-        {index -> {column -> value}}. The dictionary contains relevant information
-        for each comment in the dataset.
-        To make the function as comprehensive as possible, the user is asked to enter
-        whether the csv/tsv file has a header or not and the index of the column
-        on which they wish to apply the transformations. The column should be the one containing the comments\text
-        data that the user whishes to analyze.
-
-        Args:
-            self: reference to the current instance of the class
-            file_type (str): A string (csv/tsv)
-            file_path (str): A string containing a file path to a csv/tsv file
-            data_frame (bool): If set to true, the function returns additionally pandas DataFrame object
-                               rather than a dictionary
-
-        Returns:
-            output (dict): A nested dictionary {index -> {column -> value}} containing
-                           relevant data and metadata for each comment in the input dataframe
-        """
-
-        other_features_names = ["FKRA", "FRE","num_syllables", "avg_syl_per_word", "num_chars", "num_chars_total", \
-                                "num_terms", "num_words", "num_unique_words"]
+ 
+    def __call__(self, input_string: str, remove_punctuation = True, remove_emojis = True, remove_stopwords = True, TTR = True, CFR = True, lemmatize = True, pos = True, visualize = True) -> dict:
         
-        df = self.load(file_type, file_path)
-        
-        #Identifying the column containing the hate comments
-        c_column = int(input(f'What is the index of the column containing the comments? Remember: Index starts from 0 in Python'))
-        comments = df.iloc[:, c_column]
-
-
-        #Applying the functions to extract data and metadata
-        df['n_hashtags'] =  df.iloc[:, c_column].apply(cometa.count_hashtags)
-        df['n_urls'] =  df.iloc[:, c_column].apply(cometa.count_url)
-        df['n_user_tags'] =  df.iloc[:, c_column].apply(cometa.count_user_tags)
-
-        df['clean_comments'] = df.iloc[:, c_column].apply(cometa.preprocessor)
-        df['clean_comments'] = df['clean_comments'].apply(cometa.punctuation_removal)
-
-        df['n_emojis'] = df.iloc[:, c_column].apply(cometa.count_emoji)
-        df['clean_comments'] = df['clean_comments'].apply(cometa.demojizer)
-        
-        #Tokenizer choice depending on language
-        if self.language == 'italian':
-            df['tokenized_comments'] =  df['clean_comments'].apply(self.italian_tokenizer)
-        else:
-            df['tokenized_comments'] =  df['clean_comments'].apply(self.tokenizer)
-
-
-        df['length'] =  df['tokenized_comments'].apply(cometa.comment_length)
-        df['TTR'] =  df['tokenized_comments'].apply(cometa.type_token_ratio)
-        df['CFR'] =  df['tokenized_comments'].apply(self.content_function_ratio)
-
-
-        df['stop_words_removed'] =  df['tokenized_comments'].apply(self.stop_words_removal)
-        df['lemmatized_comments'] =  df['stop_words_removed'].apply(self.lemmatizer)
-
-        df['POS_comments'] =  df['lemmatized_comments'].apply(self.pos)
-
-
-        output = df.to_dict('index')
-
-        if data_frame == True:
-            return output, df
-        else:
-            return output
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def get_summary(self, file_type, file_path, visualize = True) -> tuple:
-
-        """A class method that returns the relevant data comparison based on grouping 
-        comparison (e.g., X v. Y) rather than for each comment individually.
-
-        get_summary() is built upon the get_dictionary method. If visualize is set to True, it also shows a simple visualization of all the
-        summarized data. It compares average number of emojis, hashtags,
-        urls, user tags, length, type-token ratio, content-function ratio for
-        two classes of comments.
-        Args:
-            self: reference to the current instance of the class
-            file_type (str): A string (csv/tsv)
-            file_path (str): A string containing a file path to a csv/tsv file
-
-        Returns:
-            tuple: a tuple of values.
-        """
-        output, df = self.get_dictionary(file_type, file_path, data_frame=True)
-        l_column = int(input(f'''Enter the index of the categorical by which you want the data to be grouped by.
-                                 Remember: Index starts from 0 in Python'''))
-        
-        mean_emojis = df.groupby(df.iloc[:, l_column])['n_emojis'].mean()
-        mean_hash = df.groupby(df.iloc[:, l_column])['n_hashtags'].mean()
-        mean_urls = df.groupby(df.iloc[:, l_column])['n_urls'].mean()
-        mean_user_tags = df.groupby(df.iloc[:, l_column])['n_user_tags'].mean()
-        mean_length = df.groupby(df.iloc[:, l_column])['length'].mean()
-        mean_TTR = df.groupby(df.iloc[:, l_column])['TTR'].mean()
-        mean_CFR = df.groupby(df.iloc[:, l_column])['CFR'].mean()
-        
-        if visualize:
-            mean_emojis.plot(kind='bar')
-            plt.title('Mean number of emojis')
-            plt.show(),
-
-            mean_hash.plot(kind='bar')
-            plt.title('Mean number of emojis')
-            plt.show(),
-
-            mean_urls.plot(kind='bar')
-            plt.title('Mean number of urls')
-            plt.show(), 
-
-            mean_user_tags.plot(kind='bar')
-            plt.title('Mean number of user tags')
-            plt.show(),
-
-            mean_length.plot(kind='bar')
-            plt.title('Mean length of the comments')
-            plt.show(),
-
-            mean_TTR.plot(kind='bar')
-            plt.title('Mean TTR')
-            plt.show(),
-
-            mean_CFR.plot(kind='bar')
-            plt.title('Mean CFR')
-            plt.show()
-
-        return mean_emojis, mean_hash, mean_urls, mean_user_tags, mean_length, mean_TTR, mean_CFR
-
-
-
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |SUBCLASS | TEXT_MANAGER |
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-class TextAnalyser(cometa):
-    """A subclass of the cometa class. It is meant to analyze single instances of text"
-    
-    """
-    def __init__(self, language: str, **args):
-        super().__init__(language)
-        
-        
-        
-    def get_data(self, input_string: str, remove_punctuation = True, remove_emojis = True, remove_stopwords = True, TTR = True, CFR = True, lemmatize = True, pos = True, visualize = True) -> dict:
-        
-        """A class method that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
+        """A class that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
         boolean arguments and returns a dictionary contatining the relevant information. If visualization is set to true, it 
         
-        get_data() is built upon the get_dictionary method. It applies the the same set of transformation on the string level. The user can choose which transformations
+        It applies a set of transformation on the string level.
+        The user can choose which transformations
         to apply and which to not. If visualize is set to True, it also shows a simple visualization of the pos-tags.
-
+        
         Args:
             self: reference to the current instance of the class
             input_string: Any string
@@ -760,54 +631,53 @@ class TextAnalyser(cometa):
             lemmatize (bool): Optionally choose whether to lemmatize (True) or not (False) the input text
             pos (bool): Optionally choose whether to pos-tag (True) or not (False) the input text
             visualize (bool): If set to true, visualizes the pos-tags using nltk color schemes.
-
         Returns:
             dictionary: a dictionary containing the relevant data and metadata for the input text
-
         """
+        
         self.input_string = input_string
-        c_string = cometa.preprocessor(self.input_string)
+        c_string = TextAnalyzer.preprocessor(self.input_string)
 
         #Basic data
-        data = {'n_hashtags': cometa.count_hashtags(self.input_string),
-        'n_urls': cometa.count_url(self.input_string),
-        'n_user_tags': cometa.count_hashtags(self.input_string),
-        'n_emojis': cometa.count_emoji(self.input_string),
+        data = {'n_hashtags': TextAnalyzer.count_hashtags(self.input_string),
+        'n_urls': TextAnalyzer.count_url(self.input_string),
+        'n_user_tags': TextAnalyzer.count_hashtags(self.input_string),
+        'n_emojis': TextAnalyzer.count_emoji(self.input_string),
         'clean_comment': c_string}
 
         if remove_punctuation:
-            c_string = cometa.punctuation_removal(c_string)
+            c_string = TextAnalyzer.punctuation_removal(c_string)
         
         if remove_emojis:
-            c_string = cometa.demojizer(c_string)
+            c_string = TextAnalyzer.demojizer(c_string)
 
         #Tokenization is always required before stopwords removal/lemmatization
         if self.language == 'italian':
-            tokens = cometa.italian_tokenizer(self, c_string)
+            tokens = TextAnalyzer.italian_tokenizer(self, c_string)
 
         else:
-            tokens = cometa.tokenizer(self, c_string)
+            tokens = TextAnalyzer.tokenizer(self, c_string)
 
     
         if remove_stopwords:
-            tokens = cometa.stop_words_removal(self, tokens)
+            tokens = TextAnalyzer.stop_words_removal(self, tokens)
         
         if TTR:
-            data['TTR'] = cometa.type_token_ratio(tokens)
+            data['TTR'] = TextAnalyzer.type_token_ratio(tokens)
         
         if CFR:
-            data['CFR'] = cometa.content_function_ratio(self, tokens)
+            data['CFR'] = TextAnalyzer.content_function_ratio(self, tokens)
 
         if lemmatize:
-            tokens = cometa.lemmatizer(self, tokens)
+            tokens = TextAnalyzer.lemmatizer(self, tokens)
         
         if pos:
-            tags = cometa.pos(self, tokens)
+            tags = TextAnalyzer.pos(self, tokens)
             data['pos'] = tags
 
         data['tokens'] = tokens
 
         if visualize:
-            visualization  = cometa.visualize_pos(tokens=tokens)
+            visualization  = TextAnalyzer.visualize_pos(tokens=tokens)
         
         return data

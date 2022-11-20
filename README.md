@@ -8,6 +8,17 @@
 
 A NLP Comments Extraction and Text Analysis tool for Italian, Dutch, and English social media comments.
 
+## Table of contents
+* [Installation](#Installation)
+* [TextAnalyzer](#TextAnalyzer)
+* [Demo TextAnalyzer](##Demo-TextAnalyzer)
+* [DataWrapper](#DataWrapper)
+* [Demo DataWrapper](##Demo-DataWrapper)
+* [Static methods](#Static-methods)
+* [Authors](#authors)
+* [Q&A](#Q&A)
+
+
 # Installation
 
 ### Windows
@@ -22,17 +33,65 @@ A NLP Comments Extraction and Text Analysis tool for Italian, Dutch, and English
 # Supported languages
  ![](https://img.shields.io/badge/languages-italian|dutch|english-red)
 
-# Functions
 
-cometa is composed by one main module named `COMETA`. The module has two main class methods:
+# TextAnalyzer
 
-**(1)** `get_dictionary`
+`TextAnalyzer` has one main behavior:
+        
+        """A class that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
+        boolean arguments and returns a dictionary contatining the relevant information. If visualization is set to true, it 
+        
+        It applies a set of transformation on the string level.
+        The user can choose which transformations
+        to apply and which to not. If visualize is set to True, it also shows a simple visualization of the pos-tags.
+        
+        Args:
+            self: reference to the current instance of the class
+            input_string: Any string
+            remove_punctuation (bool): Optionally choose whether to keep (False) or remove (True) punctuation from the input text
+            remove_emojis (bool): Optionally choose whether to keep (False) or remove (True) emojis from the input text
+            remove_stopwords (bool): Optionally choose whether to keep (False) or remove (True) stopwords from the input text
+            TTR (bool): Optionally choose whether to calculate (True) or not (False) the input text TTR
+            CFR (bool): Optionally choose whether to calculate (True) or not (False) the input text CFR
+            lemmatize (bool): Optionally choose whether to lemmatize (True) or not (False) the input text
+            pos (bool): Optionally choose whether to pos-tag (True) or not (False) the input text
+            visualize (bool): If set to true, visualizes the pos-tags using nltk color schemes.
+        Returns:
+            dictionary: a dictionary containing the relevant data and metadata for the input text
+        """
+
+## Demo TextAnalyzer
+
+```ruby
+from cometaNLP import TextAnalyzer
+
+analysis = TextAnalyzer(language='english')
+
+analysis('My name is Leonardo @Leonardo #name', visualize = False)
+
+#Output
+
+{'n_hashtags': 1,
+ 'n_urls': 0,
+ 'n_user_tags': 1,
+ 'n_emojis': 0,
+ 'clean_comment': 'My name is Leonardo',
+ 'TTR': 1.0,
+ 'CFR': 2,
+ 'pos': ['NOUN', 'NOUN'],
+ 'tokens': ['name', 'Leonardo']}
+
+```
+
+# DataWrapper
+
+**(1)** `data_wrapper`
 
         """A class method that applies a series of tranformations to csv and tsv files
         and returns a dictionary
         
-        get_dictionary() reads .csv and .tsv file, applies the functions and methods within the
-        the COMETA module to the column contaning the comments/text in the dataframe
+        data_wrapper() reads .csv and .tsv file, applies the functions and methods within the
+        the `TextAnalyzer` module to the column contaning the comments/text in the dataframe
         in meaningful order, and finally converts it into a dictionary by index according to the following format:
         {index -> {column -> value}}. The dictionary contains relevant information
         for each comment in the dataset.
@@ -53,12 +112,12 @@ cometa is composed by one main module named `COMETA`. The module has two main cl
                            relevant data and metadata for each comment in the input dataframe
         """
 
-**(2)** `get_summary`
+**(2)** `data_wrapper_summary`
  
         """A class method that returns the relevant data comparison based on grouping 
         comparison (e.g., X v. Y) rather than for each comment individually.
         
-        get_summary() is built upon the get_dictionary method. If visualize is set to True, it also shows a simple visualization of all the
+        data_wrapper_summary() is built upon the data_wrapper method. If visualize is set to True, it also shows a simple visualization of all the
         summarized data. It compares average number of emojis, hashtags,
         urls, user tags, length, type-token ratio, content-function ratio for
         two classes of comments.
@@ -71,35 +130,86 @@ cometa is composed by one main module named `COMETA`. The module has two main cl
             tuple: a tuple of values.
         """
 
-And a subclass functionality to analyze single instances of text:
+## Demo DataWrapper
+```ruby
+from cometaNLP import TextAnalyzer
 
-**(3)** `get_data`
-        
-        """A class method that operates on the text level to extract data and metadata from a comment. It applies a set of tranfromartion to it based on
-        boolean arguments and returns a dictionary contatining the relevant information. If visualization is set to true, it 
-        
-        get_data() is built upon the get_dictionary method. It applies the the same set of transformation on the string level.
-        The user can choose which transformations
-        to apply and which to not. If visualize is set to True, it also shows a simple visualization of the pos-tags.
-        
-        Args:
-            self: reference to the current instance of the class
-            input_string: Any string
-            remove_punctuation (bool): Optionally choose whether to keep (False) or remove (True) punctuation from the input text
-            remove_emojis (bool): Optionally choose whether to keep (False) or remove (True) emojis from the input text
-            remove_stopwords (bool): Optionally choose whether to keep (False) or remove (True) stopwords from the input text
-            TTR (bool): Optionally choose whether to calculate (True) or not (False) the input text TTR
-            CFR (bool): Optionally choose whether to calculate (True) or not (False) the input text CFR
-            lemmatize (bool): Optionally choose whether to lemmatize (True) or not (False) the input text
-            pos (bool): Optionally choose whether to pos-tag (True) or not (False) the input text
-            visualize (bool): If set to true, visualizes the pos-tags using nltk color schemes.
-        Returns:
-            dictionary: a dictionary containing the relevant data and metadata for the input text
-        """
+datawrap = DataWrapper(language='Italian')
+
+datawrap.data_wrapper(file_path="C:/Users/.../file.tsv", file_type='tsv')
+
+#Output
+{0: {0: 6847,
+  1: "@matteorenzi ...all'invasione di questi animali, e forse è un offesa agli animali, stranieri che arrivano in Italia e solo in Italia?...",
+  2: 1,
+  'n_hashtags': 0,
+  'n_urls': 0,
+  'n_user_tags': 1,
+  'clean_comments': "all'invasione di questi animali e forse è un offesa agli animali stranieri che arrivano in Italia e solo in Italia",
+  'n_emojis': 0,
+  'tokenized_comments': ['all',
+   'invasione',
+   'di',
+   'questi',
+   'animali',
+   'e',
+   'forse',
+   'è',
+   'un',
+   'offesa',
+   'agli',
+   'animali',
+   'stranieri',
+   'che',
+   'arrivano',
+   'in',
+   'Italia',
+   'e',
+   'solo',
+   'in',
+   'Italia'],
+  'length': 21,
+  'TTR': 0.8095238095238095,
+  'CFR': 0.8888888888888888,
+  'stop_words_removed': ['invasione',
+   'animali',
+   'forse',
+   'offesa',
+   'animali',
+   'stranieri',
+   'arrivano',
+   'Italia',
+   'solo',
+   'Italia'],
+  'lemmatized_comments': ['invasione',
+   'animale',
+   'forse',
+   'offesa',
+   'animale',
+   'straniero',
+   'arrivare',
+   'Italia',
+   'solo',
+   'Italia'],
+  'POS_comments': ['NOUN',
+   'ADJ',
+   'ADJ',
+   'ADJ',
+   'NOUN',
+   'NOUN',
+   'NOUN',
+   'NOUN',
+   'NOUN',
+   'NOUN']},
+ 1: {0: 2066,
+  1: 'È terrorismo anche questo, per mettere in uno stato di soggezione le persone e renderle innocue, mentre qualcuno... https://t.co/GFAvh0QLe5',
+  2: 0,
+
+```
 
 # Static methods
 
-The COMETA module offers a set of `@staticmethods` that can be used independently from its main class methods:
+The `TextAnalyzer` module offers a set of `@staticmethods` that can be used independently from its main class methods:
 
 - `load`
 
