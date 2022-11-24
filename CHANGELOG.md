@@ -32,3 +32,7 @@
 
 ## v0.0.9
 - Fixed an error in one of the modules file format
+
+## v0.0.11
+
+- The module DataWrapper is now fully functioning and available
