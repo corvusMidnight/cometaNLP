@@ -30,7 +30,7 @@ from cometaNLP import TextAnalyzer
 #SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |SUBCLASS | SUBCLASS |
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 
-class DataWrapper(TextAnalyzer):
+class DataWrapper(TextAnalyzer.TextAnalyzer):
     """A subclass of the TextAnlyzer class. It is meant to analyze text data inside a dataframe"
     
     """
