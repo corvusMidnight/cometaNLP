@@ -361,6 +361,6 @@ The `TextAnalyzer` module offers a set of `@staticmethods` that can be used inde
 
 **A**: The first two distributions of the package were erased due to some naming conflicts. 
 
-**Q**: *Why has version 0.0.3a0 been yanked?*
+**Q**: *Why has version 0.0.30 been yanked?*
 
 **A**: The version was meant to fix additional bugs but failed in doing so. As such, it was yanked.
