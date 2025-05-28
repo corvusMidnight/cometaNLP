@@ -3,7 +3,7 @@
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/cometaNLP)
 [![Python 3.7](https://img.shields.io/badge/python->=3.7-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
 
 A NLP Comments Extraction and Text Analysis tool for Italian, Dutch, and English social media comments.
